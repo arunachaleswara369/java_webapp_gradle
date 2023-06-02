@@ -70,8 +70,7 @@ pipeline {
               script {
                       sh '''
                         sudo chmod a+rwx /root/kconfig
-                        sudo cp /root/kconfig $KUBECONFIG
-                        sudo kubectl config view --raw > $KUBECONFIG
+                        sudo kubectl config view --raw > /root/kconfig
                         sudo kubectl apply -f myapp/
                         sudo kubectl set image deployment/myjavaapp myjavaapp=172.171.195.103:8083/springapp:${VERSION}
                       '''
