@@ -56,9 +56,8 @@ pipeline {
             steps {
                 script {
                       sh '''
-                           helmversion=${helm show chart myapp | grep version | cut -d: -f 2 | tr -d ''}
-                           tar -czvf myapp-${helmversion}.tgz myapp/
-                           curl -u admin:admin http://172.171.195.103:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
+                           tar -czvf myapp-123.tgz myapp/
+                           curl -u admin:admin http://172.171.195.103:8081/repository/helm-hosted/ --upload-file myapp-123.tgz -v
                       '''
                 }
             }
