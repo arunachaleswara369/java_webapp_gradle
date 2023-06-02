@@ -31,10 +31,10 @@ pipeline {
         stage("docker build and docker push") {
             steps {
                 script {
-                    withCredentials([string{credentialsId: 'docker_pass', variable:'docker_pass'}]) {
+                    withCredentials([string{credentialsId: 'docker-pass', variable:'docker-pass'}]) {
                         sh '''
                             docker build -t 172.171.195.103:8083/springapp:${VERSION} .
-                            docker login -u admin -p $docker_pass 172.171.195.103:8083
+                            docker login -u admin -p $docker-pass 172.171.195.103:8083
                             docker push 172.171.195.103:8083/springapp:${VERSION}
                             docker rmi 172.171.195.103:8083/springapp:${VERSION}
                         '''
@@ -57,7 +57,7 @@ pipeline {
         stage("Push Helm Chart to Nexus") {
             steps {
                 script {
-                    withCredentials([string{credentialsId: 'docker_pass', variable:'docker_pass'}]) {
+                    withCredentials([string{credentialsId: 'docker-pass', variable:'docker-pass'}]) {
                         sh '''
                              helmversion=${helm show chart myapp | grep version | cut -d: -f 2 | tr -d ''}
                              tar -czvf myapp-${helmversion}.tgz myapp/
