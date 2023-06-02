@@ -68,8 +68,8 @@ pipeline {
         stage('Deploy application on Kubernetes Cluster') {
             steps {
                 sh '''
-                  export KUBECONFIG=~/kconfig
-                  helm upgrade --install --set image.repository="172.171.195.103:8083/springapp" --set image.tag="${VERSION}" myjavaapp myapp/
+                  sudo export KUBECONFIG=~/kconfig
+                  sudo helm upgrade --install --set image.repository="172.171.195.103:8083/springapp" --set image.tag="${VERSION}" myjavaapp myapp/
                 '''
             }
         }
