@@ -68,13 +68,13 @@ pipeline {
         stage('Deploy application on Kubernetes Cluster') {
           steps {
               script {
-                  withCredentials([file(credentialsId: 'kubernetes-config', variable: 'KUBECONFIG')]) {
                       sh '''
+                        sudo chmod -R a+rwx ~/kconfig
+                        cp $KUBECONFIG ~/kconfig
                         kubectl config view --raw > $KUBECONFIG
                         kubectl apply -f myapp/
                         kubectl set image deployment/myjavaapp myjavaapp=172.171.195.103:8083/springapp:${VERSION}
                       '''
-                  }
               }
           }
       }
