@@ -14,3 +14,21 @@ service:
   type: NodePort
   port: 8080
 
+replicaCount: 2
+
+image:
+  repository: IMAGE_NAME
+  pullPolicy: IfNotPresent
+  tag: IMAGE_TAG
+
+service:
+  type: NodePort
+  port: 8080
+
+deployment:
+  kind: Deployment
+  apiVersion: apps/v1
+
+service:
+  kind: Service
+  apiVersion: v1
