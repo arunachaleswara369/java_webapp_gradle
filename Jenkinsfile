@@ -56,8 +56,8 @@ pipeline {
             steps {
                 script {
                       sh '''
-                           tar -czvf myapp-123.tgz myapp/
-                           curl -u admin:admin http://172.171.195.103:8081/repository/helm-hosted/ --upload-file myapp-123.tgz -v
+                           tar -czvf myapp.tgz myapp/
+                           curl -u admin:admin http://172.171.195.103:8081/repository/helm-hosted/ --upload-file myapp.tgz -v
                       '''
                 }
             }
