@@ -30,6 +30,6 @@ sonarqube {
     properties {
         property 'sonar.host.url', 'http://172.171.193.65:9000'
         property 'sonar.login', 'admin'
-	property 'sonar.login', 'admin1'
+	property 'sonar.password', 'admin1'
     }
 }
