@@ -55,10 +55,12 @@ pipeline {
         stage("Push Helm Chart to Nexus") {
             steps {
                 script {
-                      sh '''
-                           tar -czvf myapp.tgz myapp/
-                           curl -u admin:admin http://172.171.195.103:8081/repository/helm-hosted/ --upload-file myapp.tgz -v
-                      '''
+                    dir("kubernetes/") {
+                        sh """
+                            tar -czvf myapp.tgz myapp/
+                            curl -u admin:admin http://172.171.195.103:8081/repository/helm-hosted/ --upload-file myapp.tgz -v
+                        """
+                    }
                 }
             }
         }
