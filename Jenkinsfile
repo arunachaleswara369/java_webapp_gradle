@@ -69,7 +69,7 @@ pipeline {
           steps {
               script {
                       sh '''
-                        sudo chmod -R a+rwx /root/kconfig
+                        sudo chmod a+rwx /root/kconfig
                         sudo cp /root/kconfig $KUBECONFIG
                         sudo kubectl config view --raw > $KUBECONFIG
                         sudo kubectl apply -f myapp/
