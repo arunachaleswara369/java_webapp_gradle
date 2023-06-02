@@ -31,14 +31,12 @@ pipeline {
         stage("docker build and docker push") {
             steps {
                 script {
-                    withCredentials([string{credentialsId: 'docker-pass', variable:'docker-pass'}]) {
-                        sh '''
-                            docker build -t 172.171.195.103:8083/springapp:${VERSION} .
-                            docker login -u admin -p admin 172.171.195.103:8083
-                            docker push 172.171.195.103:8083/springapp:${VERSION}
-                            docker rmi 172.171.195.103:8083/springapp:${VERSION}
-                        '''
-                    }
+                      sh '''
+                          docker build -t 172.171.195.103:8083/springapp:${VERSION} .
+                          docker login -u admin -p admin 172.171.195.103:8083
+                          docker push 172.171.195.103:8083/springapp:${VERSION}
+                          docker rmi 172.171.195.103:8083/springapp:${VERSION}
+                      '''
                 
                 }
             }
@@ -57,14 +55,11 @@ pipeline {
         stage("Push Helm Chart to Nexus") {
             steps {
                 script {
-                    withCredentials([string{credentialsId: 'docker-pass', variable:'docker-pass'}]) {
-                        sh '''
-                             helmversion=${helm show chart myapp | grep version | cut -d: -f 2 | tr -d ''}
-                             tar -czvf myapp-${helmversion}.tgz myapp/
-                             curl -u admin:$nexus_password http://172.171.195.103:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
-                        '''
-                    }
-                
+                      sh '''
+                           helmversion=${helm show chart myapp | grep version | cut -d: -f 2 | tr -d ''}
+                           tar -czvf myapp-${helmversion}.tgz myapp/
+                           curl -u admin:admin http://172.171.195.103:8081/repository/helm-hosted/ --upload-file myapp-${helmversion}.tgz -v
+                      '''
                 }
             }
         }
