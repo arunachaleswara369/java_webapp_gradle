@@ -27,8 +27,8 @@ test {
 
 def getSonarToken() {
     def credentialsId = 'sonar-token'
-    withCredentials([string(credentialsId: credentialsId, variable: 'sonar-token')]) {
-        return sonar-token
+    withCredentials([string(credentialsId: credentialsId, variable: 'SONAR_TOKEN')]) {
+        return SONAR_TOKEN
     }
 }
 
