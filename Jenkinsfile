@@ -68,6 +68,7 @@ pipeline {
         stage('Deploy application on Kubernetes Cluster') {
           steps {
               script {
+                dir("kubernetes/") {
                       sh '''
                         sudo mkdir -p /root/.kube
                         sudo cp /root/kconfig /root/.kube/config
@@ -75,6 +76,7 @@ pipeline {
                         sudo kubectl apply -f myapp/
                         sudo kubectl set image deployment/myjavaapp myjavaapp=172.171.195.103:8083/springapp:${VERSION}
                       '''
+                }
               }
           }
       }
