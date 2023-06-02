@@ -69,9 +69,9 @@ pipeline {
           steps {
               script {
                       sh '''
-                        sudo mkdir -p $(dirname "$KUBECONFIG")
-                        sudo cat /root/kconfig > $KUBECONFIG
-                        sudo chmod 600 $KUBECONFIG
+                        sudo mkdir -p /root/.kube
+                        sudo cp /root/kconfig /root/.kube/config
+                        sudo chmod 600 /root/.kube/config
                         sudo kubectl apply -f myapp/
                         sudo kubectl set image deployment/myjavaapp myjavaapp=172.171.195.103:8083/springapp:${VERSION}
                       '''
