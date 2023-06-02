@@ -66,12 +66,17 @@ pipeline {
             }
         }
         stage('Deploy application on Kubernetes Cluster') {
-            steps {
-                sh '''
-                  sudo export KUBECONFIG=~/kconfig
-                  sudo helm upgrade --install --set image.repository="172.171.195.103:8083/springapp" --set image.tag="${VERSION}" myjavaapp myapp/
-                '''
-            }
-        }
+          steps {
+              script {
+                  withCredentials([file(credentialsId: 'kubernetes-config', variable: 'KUBECONFIG')]) {
+                      sh '''
+                        kubectl config view --raw > $KUBECONFIG
+                        kubectl apply -f myapp/
+                        kubectl set image deployment/myjavaapp myjavaapp=172.171.195.103:8083/springapp:${VERSION}
+                      '''
+                  }
+              }
+          }
+      }
     }
 }
