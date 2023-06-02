@@ -69,7 +69,7 @@ pipeline {
           steps {
               script {
                       sh '''
-                        sudo mkdir -p $(dirname $KUBECONFIG)
+                        sudo mkdir -p $(dirname "$KUBECONFIG")
                         sudo cat /root/kconfig > $KUBECONFIG
                         sudo chmod 600 $KUBECONFIG
                         sudo kubectl apply -f myapp/
