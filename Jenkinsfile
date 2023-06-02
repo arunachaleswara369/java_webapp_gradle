@@ -68,7 +68,7 @@ pipeline {
         stage('Deploy application on Kubernetes Cluster') {
           steps {
               script {
-                  withCredentials([kubeconfigFile(credentialsId: 'kubernetes-config', variable: 'KUBECONFIG')]) {
+                  withCredentials([file(credentialsId: 'kubernetes-config', variable: 'KUBECONFIG')]) {
                       sh '''
                         kubectl config view --raw > $KUBECONFIG
                         kubectl apply -f myapp/
