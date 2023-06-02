@@ -25,11 +25,16 @@ test {
 	useJUnitPlatform()
 }
 
+def getSonarToken() {
+    def credentialsId = 'sonar-token'
+    withCredentials([string(credentialsId: credentialsId, variable: 'sonar-token')]) {
+        return sonar-token
+    }
+}
 
 sonarqube {
     properties {
         property 'sonar.host.url', 'http://172.171.193.65:9000'
-        property 'sonar.login', 'admin'
-	property 'sonar.password', 'admin1'
+        property 'sonar.login', getSonarToken()
     }
 }
