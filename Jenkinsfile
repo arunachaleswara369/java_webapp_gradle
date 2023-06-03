@@ -33,10 +33,11 @@ pipeline {
         script {
           def sanitizedVersion = VERSION.replaceAll("[^a-z0-9._-]", "_")
           sh """
-            docker build -t ${DOCKER_IMAGE_NAME} .
+            docker build -t ${DOCKER_IMAGE_NAME}:${sanitizedVersion} .
             docker login -u admin -p admin 172.171.195.103:8083
-            docker push ${NEXUS_REPO_URL}/${DOCKER_IMAGE_NAME}
-            docker rmi ${DOCKER_IMAGE_NAME}
+            docker save ${DOCKER_IMAGE_NAME}:${sanitizedVersion} | \
+            curl -u admin:admin -X POST -H "Content-Type: application/octet-stream" --data-binary @- ${NEXUS_REPO_URL}/${DOCKER_IMAGE_NAME}:${sanitizedVersion}
+            docker rmi ${DOCKER_IMAGE_NAME}:${sanitizedVersion}
           """
         }
       }
