@@ -34,7 +34,7 @@ pipeline {
           sh """
             docker build -t ${DOCKER_IMAGE_NAME}:${VERSION} .
             docker login -u admin -p admin 172.171.195.103:8083
-            docker push ${NEXUS_REPO_URL}/${DOCKER_IMAGE_NAME}:${VERSION}
+            docker image push ${NEXUS_REPO_URL}/${DOCKER_IMAGE_NAME}:${VERSION}
             docker rmi ${DOCKER_IMAGE_NAME}:${VERSION}
           """
         }
