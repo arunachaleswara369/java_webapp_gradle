@@ -33,11 +33,11 @@ pipeline {
         script {
           def sanitizedVersion = VERSION.replaceAll("[^a-z0-9._-]", "_")
           sh """
-            docker build -t ${DOCKER_IMAGE_NAME}:${sanitizedVersion} .
-            docker login -u admin -p admin 172.171.195.103:8083
-            docker tag ${DOCKER_IMAGE_NAME}:${sanitizedVersion} ${NEXUS_REPO_URL}/${DOCKER_IMAGE_NAME}:${sanitizedVersion}
-            docker push ${NEXUS_REPO_URL}/${DOCKER_IMAGE_NAME}:${sanitizedVersion}
-            docker rmi ${NEXUS_REPO_URL}/${DOCKER_IMAGE_NAME}:${sanitizedVersion}
+        docker build -t ${DOCKER_IMAGE_NAME}:${sanitizedVersion} .
+        docker login -u admin -p admin 172.171.195.103:8083
+        docker tag ${DOCKER_IMAGE_NAME}:${sanitizedVersion} ${NEXUS_REPO_URL}/${DOCKER_IMAGE_NAME}:${sanitizedVersion}
+        docker push ${NEXUS_REPO_URL}/${DOCKER_IMAGE_NAME}:${sanitizedVersion}
+        docker rmi ${DOCKER_IMAGE_NAME}:${sanitizedVersion}
           """
         }
       }
