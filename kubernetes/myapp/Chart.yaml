@@ -1,4 +1,5 @@
 apiVersion: v2
+kind: application
 name: myapp
 description: A Helm chart for Kubernetes
 
@@ -22,4 +23,3 @@ version: 0.2.0
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 appVersion: "1.16.0"
-kind: application
