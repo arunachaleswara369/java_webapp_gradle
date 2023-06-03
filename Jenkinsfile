@@ -3,7 +3,7 @@ pipeline {
   environment {
     VERSION="${env.BUILD_ID}"
     NEXUS_REPO_URL="http://172.171.195.103:8081/repository/docker-hosted"
-    DOCKER_IMAGE_NAME="springApp"
+    DOCKER_IMAGE_NAME="springapp"
   }
   stages {
     stage("sonarqube static code check") {
