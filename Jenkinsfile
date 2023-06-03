@@ -2,6 +2,8 @@ pipeline {
   agent any 
   environment {
       VERSION="${env.BUILD_ID}"
+      NEXUS_REPO_URL="http://172.171.195.103:8081/repository/docker-hosted"
+      DOCKER_IMAGE_NAME="springapp"
   }
   stages {
         stage("sonarqube static code check"){
@@ -32,25 +34,12 @@ pipeline {
             steps {
                 script {
                       sh '''
-                          docker build -t 172.171.195.103:8083/springapp:${VERSION} .
+                          docker build -t ${DOCKER_IMAGE_NAME}:${VERSION} .
                           docker login -u admin -p admin 172.171.195.103:8083
-                          docker push 172.171.195.103:8083/springapp:${VERSION}
-                          docker rmi 172.171.195.103:8083/springapp:${VERSION}
+                          docker tag ${DOCKER_IMAGE_NAME}:${VERSION} ${NEXUS_REPO_URL}/${DOCKER_IMAGE_NAME}:${VERSION}
+                          docker push ${NEXUS_REPO_URL}/${DOCKER_IMAGE_NAME}:${VERSION}
+                          docker rmi ${DOCKER_IMAGE_NAME}:${VERSION}
                       '''
-                
-                }
-            }
-        }
-        stage("Push Helm Chart to Nexus") {
-            steps {
-                script {
-                    dir("kubernetes/") {
-                        sh """
-                            helmversion=\$(helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ')
-                            tar -xzvf myapp-\${helmversion}.tgz -C myapp/
-                            curl -u admin:admin http://172.171.195.103:8081/repository/helm-hosted/ --upload-file myapp-\${helmversion}.tgz -v
-                        """
-                    }
                 }
             }
         }
@@ -63,7 +52,7 @@ pipeline {
                         sudo cp /root/kconfig /root/.kube/config
                         sudo chmod 600 /root/.kube/config
                         sudo kubectl apply -f myapp/
-                        sudo kubectl set image deployment/myjavaapp myjavaapp=172.171.195.103:8083/springapp:${VERSION}
+                        sudo kubectl set image deployment/myjavaapp myjavaapp=${NEXUS_REPO_URL}/${DOCKER_IMAGE_NAME}:${VERSION}
                       '''
                 }
               }
