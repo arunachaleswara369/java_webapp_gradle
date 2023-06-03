@@ -39,6 +39,7 @@ pipeline {
             curl -u admin:admin -X POST -H "Content-Type: application/octet-stream" --data-binary @- ${NEXUS_REPO_URL}/${DOCKER_IMAGE_NAME}:${sanitizedVersion}
             docker rmi ${DOCKER_IMAGE_NAME}:${sanitizedVersion}
           """
+          env.IMAGE_TAG = sanitizedVersion
         }
       }
     }
@@ -47,11 +48,11 @@ pipeline {
         script {
           dir("kubernetes/") {
             sh """
-              sudo mkdir -p /root/.kube
-              sudo cp /root/kconfig /root/.kube/config
-              sudo chmod 600 /root/.kube/config
-              sudo kubectl apply -f myapp/
-              sudo kubectl set image deployment/myjavaapp myjavaapp=${NEXUS_REPO_URL}/${DOCKER_IMAGE_NAME}:${VERSION}
+              mkdir -p ~/.kube
+              cp /root/kconfig ~/.kube/config
+              chmod 600 ~/.kube/config
+              kubectl apply -f myapp/
+              kubectl set image deployment/myjavaapp myjavaapp=${NEXUS_REPO_URL}/${DOCKER_IMAGE_NAME}:${env.IMAGE_TAG}
             """
           }
         }
